@@ -39,7 +39,9 @@ func runInRegion(ctx context.Context, dryRun bool, region string) {
 	var groupIDs []string
 	for {
 		var nextToken *string
-		groups, err := svc.DescribeSecurityGroups(ctx, &ec2.DescribeSecurityGroupsInput{})
+		groups, err := svc.DescribeSecurityGroups(ctx, &ec2.DescribeSecurityGroupsInput{
+			NextToken: nextToken,
+		})
 		if err != nil {
 			log.Fatalf("failed to describe security groups: %v", err)
 		}
