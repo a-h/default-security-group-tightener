@@ -4,6 +4,9 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"os"
+	"strconv"
+	"strings"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/config"
@@ -13,12 +16,12 @@ import (
 
 func main() {
 	ctx := context.Background()
-	dryRun := false
-	regions := []string{
-		"us-east-1", // North Virginia.
-		"eu-west-1", // London.
-		"eu-west-2", // Ireland.
+	var dryRun bool = false
+
+	if dryRunStr := os.Getenv("DRYRUN"); dryRunStr != "" {
+		dryRun, _ = strconv.ParseBool(dryRunStr)
 	}
+	regions := strings.Split(os.Getenv("REGIONS"), ",")
 	run(ctx, dryRun, regions)
 }
 
